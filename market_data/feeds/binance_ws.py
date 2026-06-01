@@ -86,7 +86,7 @@ class BinanceWsClient:
         # Route stream names → handlers at construction time so dispatch is O(1)
         self._handlers: dict[str, Handler] = {}
         if on_depth       is not None: self._handlers[f"{sym}@depth@100ms"] = on_depth
-        if on_agg_trade   is not None: self._handlers[f"{sym}@trade"]      = on_agg_trade
+        if on_agg_trade   is not None: self._handlers[f"{sym}@aggTrade"]    = on_agg_trade
         if on_mark_price  is not None: self._handlers[f"{sym}@markPrice@1s"] = on_mark_price
         if on_book_ticker is not None: self._handlers[f"{sym}@bookTicker"] = on_book_ticker
 
@@ -135,7 +135,8 @@ class BinanceWsClient:
         sym     = self.symbol.lower()
         streams = "/".join([
             f"{sym}@depth@100ms",
-            f"{sym}@trade",
+            f"{sym}@aggTrade",
+            f"{sym}@markPrice@1s",
             f"{sym}@bookTicker",
         ])
         return f"{_WS_BASE}/stream?streams={streams}"
