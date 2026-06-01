@@ -230,24 +230,12 @@ class TestSymbolCapture:
         assert mark_data.get("s") == "BTCUSDT" or mark_data.get("symbol") == "BTCUSDT"
 
     async def test_on_book_passes_snapshot_to_writer(self, tmp_path: Path) -> None:
-        import asyncio
+        """_on_book is the on_book_update callback — it must call writer.add_book."""
         from market_data.capture import SymbolCapture
 
-        rest   = MagicMock()
-        rest.depth = AsyncMock(return_value={
-            "lastUpdateId": 100, "T": 1_717_200_000_000,
-            "bids": [["50000", "2"]], "asks": [["50001", "1"]],
-        })
         writer = MagicMock(spec=TickWriter)
-        cap    = SymbolCapture("BTCUSDT", rest, writer)
+        cap    = SymbolCapture("BTCUSDT", MagicMock(), writer)
 
-        depth_event = {
-            "U": 101, "u": 102, "pu": 100,
-            "E": 1_717_200_001_000,
-            "b": [["50000", "3"]],
-            "a": [],
-        }
-        await cap._on_depth(depth_event)
-        # on_book_update fires via ensure_future — yield once to let it complete
-        await asyncio.sleep(0)
-        writer.add_book.assert_called_once()
+        snap = _snap()
+        await cap._on_book(snap)
+        writer.add_book.assert_called_once_with(snap)
