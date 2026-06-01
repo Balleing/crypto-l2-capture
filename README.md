@@ -1,5 +1,7 @@
 # binance-l2-capture
 
+[![CI](https://github.com/Balleing/binance-l2-capture/actions/workflows/ci.yml/badge.svg)](https://github.com/Balleing/binance-l2-capture/actions/workflows/ci.yml)
+
 **Gap-free Binance USDT-M perpetual futures order book recording — self-hosted, bring-your-own-key.**
 
 `binance-l2-capture` records Binance USDT-M perpetual futures order book data to disk. It implements Binance's full snapshot/diff merge protocol with gap detection, automatic resync, and runtime invariants that **halt on a bad book state rather than silently writing garbage to disk**.
