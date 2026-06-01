@@ -73,6 +73,7 @@ Three streams, each written to `data/SYMBOL/<stream>/YYYY-MM-DD/HH-MM-SS.parquet
 | Field | Type | Notes |
 |---|---|---|
 | `timestamp_ms` | int64 | Exchange event time (ms since epoch) |
+| `received_at_ms` | int64 | Local receive time (ms since epoch); `received_at_ms − timestamp_ms` is capture latency |
 | `update_id` | int64 | Binance sequence ID, for gap verification |
 | `microprice` | float64 | Volume-weighted mid: `(bid_qty×ask + ask_qty×bid) / (bid_qty + ask_qty)` |
 | `imbalance` | float64 | `bid_qty / (bid_qty + ask_qty)` at best level |

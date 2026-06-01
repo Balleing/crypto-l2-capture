@@ -28,6 +28,7 @@ Design choices:
 from __future__ import annotations
 
 import asyncio
+import time
 from collections import defaultdict
 from datetime import datetime, timezone
 from decimal import Decimal
@@ -83,9 +84,10 @@ class TickWriter:
     def add_book(self, snap: BookSnapshot) -> None:
         """Append one L2 book snapshot row."""
         row: dict[str, Any] = {
-            "timestamp_ms": snap.event_time_ms,
-            "update_id":    snap.last_update_id,
-            "microprice":   _to_float(snap.microprice),
+            "timestamp_ms":    snap.event_time_ms,
+            "received_at_ms":  int(time.time() * 1000),
+            "update_id":       snap.last_update_id,
+            "microprice":      _to_float(snap.microprice),
             "imbalance":    _to_float(snap.imbalance),
             "mid":          _to_float(snap.mid),
             "spread":       _to_float(snap.spread),
