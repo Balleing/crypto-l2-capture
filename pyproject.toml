@@ -34,5 +34,8 @@ dev = [
 asyncio_mode = "auto"
 testpaths = ["tests"]
 
+[project.scripts]
+l2cap = "market_data.cli:main"
+
 [tool.hatch.build.targets.wheel]
 packages = ["market_data", "config"]
