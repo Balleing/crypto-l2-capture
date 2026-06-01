@@ -81,6 +81,8 @@ Three streams, each written to `data/SYMBOL/<stream>/YYYY-MM-DD/HH-MM-SS.parquet
 | `bid_price_N`, `bid_qty_N` | float64 | N = 0..book_depth−1, N=0 is best bid |
 | `ask_price_N`, `ask_qty_N` | float64 | N = 0..book_depth−1, N=0 is best ask |
 
+The derived columns (`microprice`, `imbalance`, `mid`, `spread`) are convenience columns — all four are fully recomputable from the stored ladder and are included so common research queries don't require a separate pass.
+
 **trades** — aggregated trade events
 
 | Field | Type | Notes |
