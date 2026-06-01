@@ -1,0 +1,13 @@
+exchange:
+  name: binance_futures
+  ws_base: "wss://fstream.binance.com"
+  rest_base: "https://fapi.binance.com"
+
+# Symbols to capture (USDT-M perpetuals only)
+symbols:
+  - BTCUSDT
+  - ETHUSDT
+
+capture:
+  book_depth: 20    # levels per side stored (top-20 sufficient for microstructure)
+  data_dir: "data"  # root for parquet output; partitioned by symbol/date/time
