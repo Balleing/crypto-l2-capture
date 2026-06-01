@@ -47,8 +47,8 @@ def _ms_to_date(ts_ms: int) -> str:
 
 
 def _flush_filename() -> str:
-    """HH-MM-SS timestamp for the current flush file."""
-    return datetime.now(tz=timezone.utc).strftime("%H-%M-%S")
+    """HH-MM-SS-ffffff timestamp for the current flush file (microseconds prevent collisions)."""
+    return datetime.now(tz=timezone.utc).strftime("%H-%M-%S-%f")
 
 
 def _to_float(v: Decimal | None) -> float | None:
@@ -124,17 +124,16 @@ class TickWriter:
         """
         Append one @trade event (Binance USDT-M Futures).
 
-        data fields:
+        data fields (Binance @aggTrade stream):
           T  — trade time ms
-          t  — trade id
+          a  — aggregate trade ID
           p  — price string
           q  — quantity string
           m  — buyer is maker (True → taker was seller, sign = -1)
-          X  — order type ("MARKET" etc.)
         """
         self._trades[data.get("s", "UNKNOWN")].append({
             "timestamp_ms":  int(data["T"]),
-            "trade_id":      int(data["t"]),
+            "trade_id":      int(data["a"]),
             "price":         float(data["p"]),
             "qty":           float(data["q"]),
             "buyer_is_maker": bool(data["m"]),
