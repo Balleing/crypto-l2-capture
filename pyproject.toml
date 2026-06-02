@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "binance-l2-capture"
-version = "0.1.0"
-description = "Gap-free Binance USDT-M futures L2 order book capture pipeline"
+name = "crypto-l2-capture"
+version = "0.2.0"
+description = "Gap-free L2 order book capture for Binance, Bybit, OKX, and Deribit"
 requires-python = ">=3.11"
 dependencies = [
     # WebSocket and HTTP

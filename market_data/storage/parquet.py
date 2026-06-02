@@ -39,6 +39,7 @@ import polars as pl
 from loguru import logger
 
 from market_data.book.l2 import BookSnapshot
+from market_data.exchanges.base import NormalizedTrade
 
 FLUSH_INTERVAL_S: int = 300   # flush every 5 minutes
 
@@ -141,6 +142,17 @@ class TickWriter:
             "buyer_is_maker": bool(data["m"]),
             # sign: +1 if taker bought (buyer_is_maker=False), -1 if taker sold
             "taker_sign":    -1 if data["m"] else 1,
+        })
+
+    def add_trade_normalized(self, trade: NormalizedTrade) -> None:
+        """Append one NormalizedTrade from any exchange adapter."""
+        self._trades[trade.symbol].append({
+            "timestamp_ms":   trade.timestamp_ms,
+            "trade_id":       trade.trade_id,
+            "price":          float(trade.price),
+            "qty":            float(trade.qty),
+            "buyer_is_maker": trade.buyer_is_maker,
+            "taker_sign":     -1 if trade.buyer_is_maker else 1,
         })
 
     def add_mark_price(self, data: dict) -> None:
